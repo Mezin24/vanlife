@@ -4,32 +4,19 @@ import { About } from './pages/about/About';
 import './server';
 import { VansList } from 'pages/vans/VansList';
 import { VanDetails } from 'pages/vanDetails/VanDetails';
+import { Layout } from 'components/layout/Layout';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <header>
-        <Link className='site-logo' to='/'>
-          #vanlife
-        </Link>
-        <nav>
-          <Link to='/about'>About</Link>
-          <Link to='/vans'>Vans</Link>
-        </nav>
-      </header>
-      <main
-        style={{
-          maxWidth: '780px',
-          margin: '0 auto',
-        }}
-      >
-        <Routes>
-          <Route path='/' element={<Home />} />
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/vans' element={<VansList />} />
           <Route path='/vans/:id' element={<VanDetails />} />
-        </Routes>
-      </main>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };
