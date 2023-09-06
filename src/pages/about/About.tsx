@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import bgImg from 'assets/about-hero.png'
+import bgImg from 'assets/images/about-hero.png'
 
 export const About = () => {
   return (
