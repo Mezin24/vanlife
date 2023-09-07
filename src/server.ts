@@ -1,4 +1,14 @@
-import { createServer, Model } from 'miragejs';
+import { createServer, Model, Registry } from 'miragejs';
+import { Vans } from 'types/vans';
+import Schema from 'miragejs/orm/schema';
+
+type AppRegistry = Registry<
+  { vans: any },
+  {
+    /* factories can be defined here */
+  }
+>;
+type AppSchema = Schema<AppRegistry>;
 
 createServer({
   models: {
@@ -78,21 +88,21 @@ createServer({
     this.namespace = 'api';
     this.logging = false;
 
-    this.get('/vans', (schema, request) => {
+    this.get('/vans', (schema: any) => {
       return schema.vans.all();
     });
 
-    this.get('/vans/:id', (schema, request) => {
+    this.get('/vans/:id', (schema: any, request) => {
       const id = request.params.id;
       return schema.vans.find(id);
     });
 
-    this.get('/host/vans', (schema, request) => {
+    this.get('/host/vans', (schema: any) => {
       // Hard-code the hostId for now
       return schema.vans.where({ hostId: '123' });
     });
 
-    this.get('/host/vans/:id', (schema, request) => {
+    this.get('/host/vans/:id', (schema: any, request) => {
       // Hard-code the hostId for now
       const id = request.params.id;
       return schema.vans.findBy({ id, hostId: '123' });
