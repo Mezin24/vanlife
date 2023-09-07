@@ -1,14 +1,4 @@
-import { createServer, Model, Registry } from 'miragejs';
-import { Vans } from 'types/vans';
-import Schema from 'miragejs/orm/schema';
-
-type AppRegistry = Registry<
-  { vans: any },
-  {
-    /* factories can be defined here */
-  }
->;
-type AppSchema = Schema<AppRegistry>;
+import { createServer, Model } from 'miragejs';
 
 createServer({
   models: {
