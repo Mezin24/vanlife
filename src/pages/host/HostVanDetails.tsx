@@ -3,7 +3,6 @@ import { OutletContext } from 'types/outletContext';
 
 export const HostVanDetails = () => {
   const { currentVan } = useOutletContext<OutletContext>();
-  console.log(currentVan);
   return (
     <section className='host-van-detail-info'>
       <h4>

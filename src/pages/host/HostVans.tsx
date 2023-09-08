@@ -5,6 +5,7 @@ import { Vans } from 'types/vans';
 
 export const HostVans = () => {
   const [vans, setVans] = useState<Vans[]>([]);
+
   useEffect(() => {
     const fetchHostVans = async () => {
       try {
@@ -19,7 +20,7 @@ export const HostVans = () => {
   }, []);
 
   const hostVansEls = vans.map((van) => (
-    <Link to={`${van.id}`} key={van.id} className='host-van-link-wrapper'>
+    <Link to={van.id} key={van.id} className='host-van-link-wrapper'>
       <div className='host-van-single' key={van.id}>
         <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
         <div className='host-van-info'>

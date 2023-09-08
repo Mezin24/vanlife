@@ -1,15 +1,26 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { Vans } from 'types/vans';
 
 type VanDetailsParams = {
   id: string;
 };
 
+interface LocationState {
+  search: string;
+}
+
 export const VanDetails = () => {
   const { id } = useParams<VanDetailsParams>();
   const [van, setVan] = useState<Vans | null>(null);
+  const location = useLocation();
+  const search = (location.state as LocationState)?.search;
+  const type = search.substring(
+    search.indexOf('type=') + 1,
+    search.lastIndexOf('&')
+  );
+  console.log(type);
 
   useEffect(() => {
     const fetchVan = async () => {
@@ -27,6 +38,13 @@ export const VanDetails = () => {
 
   return (
     <div className='van-detail-container'>
+      <Link
+        to={`..${search ? `?${search}` : ''}`}
+        relative='path'
+        className='back-button'
+      >
+        &larr; <span>Back to all vans</span>
+      </Link>
       {van ? (
         <div className='van-detail'>
           <img src={van.imageUrl} />
