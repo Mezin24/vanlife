@@ -1,11 +1,12 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { fetchVans } from 'api/services/fetchVans';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Vans } from 'types/vans';
 import { VanItem } from './VanItem';
-import { useSearchParams } from 'react-router-dom';
+
+export const loader = () => fetchVans()
 
 export const VansList = () => {
-  const [vans, setVans] = useState<Vans[]>([]);
+  const vans = useLoaderData() as Vans[]
   const [searchParams, setSearchParams] = useSearchParams();
   const typeFilter = searchParams.get('type');
 
@@ -13,6 +14,7 @@ export const VansList = () => {
     <button
       className={`van-type ${type} ${typeFilter === type ? 'selected' : null}`}
       onClick={() => setSearchParams(type === 'clear' ? '' : { type })}
+      key={type}
     >
       {type}
     </button>
@@ -20,24 +22,12 @@ export const VansList = () => {
 
   if (typeFilter) {
     typeBadges.push(
-      <button className='van-type' onClick={() => setSearchParams('')}>
+      <button key='clear' className='van-type' onClick={() => setSearchParams('')}>
         clear filter
       </button>
     );
   }
 
-  useEffect(() => {
-    const fetchVans = async () => {
-      try {
-        const { data } = await axios.get<{ vans: Vans[] }>('/api/vans');
-        setVans(data.vans);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchVans();
-  }, []);
 
   const displayedVans = typeFilter
     ? vans.filter((van) => van.type === typeFilter)

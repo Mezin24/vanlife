@@ -7,7 +7,6 @@ interface VanItemProps {
 }
 
 export const VanItem = ({ van, searchFilter }: VanItemProps) => {
-  console.log(searchFilter);
   return (
     <div className='van-tile'>
       <Link to={van.id} state={{ search: searchFilter }}>

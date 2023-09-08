@@ -16,12 +16,8 @@ export const VanDetails = () => {
   const [van, setVan] = useState<Vans | null>(null);
   const location = useLocation();
   const search = (location.state as LocationState)?.search;
-  const type = search.substring(
-    search.indexOf('type=') + 1,
-    search.lastIndexOf('&')
-  );
-  console.log(type);
-
+  const hasTypeFilter = search?.includes('type=');
+  
   useEffect(() => {
     const fetchVan = async () => {
       try {
@@ -43,7 +39,7 @@ export const VanDetails = () => {
         relative='path'
         className='back-button'
       >
-        &larr; <span>Back to all vans</span>
+        &larr; <span>Back to {hasTypeFilter ? van?.type :  'all'} vans</span>
       </Link>
       {van ? (
         <div className='van-detail'>
