@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import loginAvatar from 'assets/icons/avatar-icon.png';
 
 export const Header = () => {
   const addNavLinkClass = useCallback(
@@ -21,6 +22,9 @@ export const Header = () => {
         <NavLink to='/vans' className={addNavLinkClass}>
           Vans
         </NavLink>
+        <Link to='login' className='login-link'>
+          <img src={loginAvatar} className='login-icon' />
+        </Link>
       </nav>
     </header>
   );
