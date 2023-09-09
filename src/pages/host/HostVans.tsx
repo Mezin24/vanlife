@@ -1,23 +1,15 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { fetchHostVans } from 'api/services/fetchHostVans';
+import { Link, useLoaderData } from 'react-router-dom';
 import { Vans } from 'types/vans';
+import { requireAuth } from 'utils/helpers/requireAuth';
+
+export const loader = async () => {
+  await requireAuth();
+  return fetchHostVans();
+};
 
 export const HostVans = () => {
-  const [vans, setVans] = useState<Vans[]>([]);
-
-  useEffect(() => {
-    const fetchHostVans = async () => {
-      try {
-        const { data } = await axios.get<{ vans: Vans[] }>('/api/host/vans');
-        setVans(data.vans);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchHostVans();
-  }, []);
+  const { vans } = useLoaderData() as { vans: Vans[] };
 
   const hostVansEls = vans.map((van) => (
     <Link to={van.id} key={van.id} className='host-van-link-wrapper'>
@@ -38,7 +30,7 @@ export const HostVans = () => {
         {vans.length > 0 ? (
           <section>{hostVansEls}</section>
         ) : (
-          <h2>Loading...</h2>
+          <h2>No host vans</h2>
         )}
       </div>
     </section>

@@ -1,30 +1,38 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
+import { fetchHostVans } from 'api/services/fetchHostVans';
+import {
+  ActionFunctionArgs,
+  Link,
+  LoaderFunction,
+  NavLink,
+  Outlet,
+  ParamParseKey,
+  Params,
+  useLoaderData,
+} from 'react-router-dom';
 import { Vans } from 'types/vans';
 import { linkStyles } from 'utils/helpers/linkStyles';
+import { requireAuth } from 'utils/helpers/requireAuth';
+
+const Paths = {
+  vanDetails: '/host/vans/:id',
+} as const;
+
+interface HostVansLoaderArgs extends ActionFunctionArgs {
+  params: Params<ParamParseKey<typeof Paths.vanDetails>>;
+}
+
+export const loader: LoaderFunction = async ({
+  params,
+}: HostVansLoaderArgs) => {
+  await requireAuth();
+  return fetchHostVans(params.id);
+};
 
 export const HostVanLayout = () => {
-  const { id } = useParams<{ id: string }>();
-  const [currentVan, setCurrentVan] = useState<Vans | null>(null);
-
-  useEffect(() => {
-    const fetchCurrentVan = async () => {
-      try {
-        const { data } = await axios.get<{ vans: Vans }>(
-          `/api/host/vans/${id}`
-        );
-        setCurrentVan(data.vans);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCurrentVan();
-  }, [id]);
+  const { vans: currentVan } = useLoaderData() as { vans: Vans };
 
   if (!currentVan) {
-    return <h1>Loading...</h1>;
+    return <h1>No vans found</h1>;
   }
 
   return (
