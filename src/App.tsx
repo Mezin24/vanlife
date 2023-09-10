@@ -12,7 +12,7 @@ import {
 import { HostVanPhotos } from 'pages/host/HostVanPhotos';
 import { HostVanPricing } from 'pages/host/HostVanPricing';
 import { HostVans, loader as HostVanLoader } from 'pages/host/HostVans';
-import Login from 'pages/login/Login';
+import { Login, loader as loginLoader } from 'pages/login/Login';
 import { NoutFound } from 'pages/notFound/NoutFound';
 import {
   VanDetails,
@@ -34,14 +34,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />}>
       <Route index element={<Home />} />
-      <Route path='login' element={<Login />} />
-      <Route
-        path='host'
-        element={<HostLayout />}
-        loader={async () => {
-          return await requireAuth();
-        }}
-      >
+      <Route path='login' element={<Login />} loader={loginLoader} />
+      <Route path='host' element={<HostLayout />}>
         <Route
           index
           element={<HostDashboard />}
@@ -50,6 +44,11 @@ const router = createBrowserRouter(
         <Route
           path='income'
           element={<HostIncome />}
+          loader={async () => await requireAuth()}
+        />
+        <Route
+          path='reviews'
+          element={<HostReviews />}
           loader={async () => await requireAuth()}
         />
         <Route path='vans' element={<HostVans />} loader={HostVanLoader} />
@@ -74,7 +73,6 @@ const router = createBrowserRouter(
             loader={async () => await requireAuth()}
           />
         </Route>
-        <Route path='reviews' element={<HostReviews />} />
       </Route>
       <Route path='about' element={<About />} />
       <Route

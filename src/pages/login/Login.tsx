@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, FormEvent, ChangeEvent } from 'react';
+import {
+  ActionFunctionArgs,
+  LoaderFunction,
+  ParamParseKey,
+  Params,
+  useLoaderData,
+} from 'react-router-dom';
 
-export default function Login() {
+const Paths = {
+  login: '/login',
+} as const;
+
+interface LoginArgs extends ActionFunctionArgs {
+  params: Params<ParamParseKey<typeof Paths.login>>;
+}
+
+export const loader: LoaderFunction = async ({ request }: LoginArgs) => {
+  const message = new URL(request.url).searchParams.get('message');
+  return message;
+};
+
+export function Login() {
   const [loginFormData, setLoginFormData] = useState({
     email: '',
     password: '',
   });
+  const message = useLoaderData() as string;
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(loginFormData);
   }
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setLoginFormData((prev) => ({
       ...prev,
@@ -23,6 +43,7 @@ export default function Login() {
   return (
     <div className='login-container'>
       <h1>Sign in to your account</h1>
+      {message && <h2 className='red'>{message}</h2>}
       <form onSubmit={handleSubmit} className='login-form'>
         <input
           name='email'
