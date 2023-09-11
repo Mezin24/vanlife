@@ -12,7 +12,11 @@ import {
 import { HostVanPhotos } from 'pages/host/HostVanPhotos';
 import { HostVanPricing } from 'pages/host/HostVanPricing';
 import { HostVans, loader as HostVanLoader } from 'pages/host/HostVans';
-import { Login, loader as loginLoader } from 'pages/login/Login';
+import {
+  Login,
+  loader as loginLoader,
+  action as loginAction,
+} from 'pages/login/Login';
 import { NoutFound } from 'pages/notFound/NoutFound';
 import {
   VanDetails,
@@ -34,7 +38,12 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />}>
       <Route index element={<Home />} />
-      <Route path='login' element={<Login />} loader={loginLoader} />
+      <Route
+        path='login'
+        element={<Login />}
+        loader={loginLoader}
+        action={loginAction}
+      />
       <Route path='host' element={<HostLayout />}>
         <Route
           index
