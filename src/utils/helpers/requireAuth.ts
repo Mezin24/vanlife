@@ -3,7 +3,7 @@ import { Local_Storage_auth_key } from 'utils/localStorage/localStorage';
 
 export async function requireAuth() {
   const isLoggedIn = JSON.parse(
-    localStorage.getItem(Local_Storage_auth_key) || ''
+    localStorage.getItem(Local_Storage_auth_key) || 'false'
   );
 
   if (!isLoggedIn) {
